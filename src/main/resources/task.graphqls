@@ -1,0 +1,17 @@
+type TaskDocument {
+    id: ID!
+    title: String
+    completed: Boolean
+}
+
+type Query {
+    findAllTasks: [TaskDocument]
+    findTasks(completed: Boolean!): [TaskDocument]
+    findTaskById(id: String!): TaskDocument
+}
+
+type Mutation {
+    createTask(title: String!): TaskDocument!
+    updateTask(id: String, title: String, completed: Boolean): TaskDocument!
+    deleteTask(id: ID!): Boolean
+}

@@ -1,0 +1,41 @@
+version: '3.7'
+
+services:
+
+  graphql-api:
+    build: .
+    volumes:
+      - ./:/home/gradle/project
+    depends_on:
+      - mongodb-docker
+    ports:
+      - 8080:8080
+    networks:
+      - default
+    environment:
+      - SPRING_PROFILES_ACTIVE=docker
+
+  mongodb-docker:
+    image: mongo
+    restart: always
+    ports:
+      - 27017:27017
+    networks:
+      - default
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: root
+      MONGO_INITDB_ROOT_PASSWORD: example
+
+  mongodb-ui:
+    image: mongo-express
+    restart: always
+    depends_on:
+      - mongodb-docker
+    ports:
+      - 8081:8081
+    networks:
+      - default
+    environment:
+      ME_CONFIG_MONGODB_SERVER: mongodb-docker
+      ME_CONFIG_MONGODB_ADMINUSERNAME: root
+      ME_CONFIG_MONGODB_ADMINPASSWORD: example
